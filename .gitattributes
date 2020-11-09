@@ -1,0 +1,6 @@
+# Set all files matching the filter so that line endings are converted from CRLF to LF if those files are determined by Git to be text and not binary.
+# This relies on Git’s built in binary detection heuristics.
+*   text=auto
+
+# if we need to store something that is incorrectly detected as text then uncomment the following lines and change the filter
+#*.png   binary
