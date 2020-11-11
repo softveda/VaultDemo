@@ -37,11 +37,4 @@ steps:
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'drop'
-      publishLocation: 'Container'
-  
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Terraform files'
-    inputs:
-      PathtoPublish: 'build/provision'
-      ArtifactName: 'drop'
-      publishLocation: 'Container'
+      publishLocation: 'Container'  
