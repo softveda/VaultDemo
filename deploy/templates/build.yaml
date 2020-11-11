@@ -1,0 +1,47 @@
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core sdk'
+    inputs:
+      packageType: sdk
+      version: 3.1.x
+      installationPath: $(Agent.ToolsDirectory)/dotnet
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Restore'
+    inputs:
+      command: 'restore'
+      projects: '**/*.csproj'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'Build'
+    inputs:
+      command: 'build'
+      projects: '**/*.csproj'
+      arguments: '--configuration $(BuildConfiguration) --no-restore'
+  
+  - task: DotNetCoreCLI@2
+    displayName: 'Publish & Zip'
+    inputs:
+      command: 'publish'
+      publishWebProjects: false
+      projects: |
+        src/TodoApp/TodoApp/*.csproj
+      arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+  
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifacts'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'
+  
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Terraform files'
+    inputs:
+      PathtoPublish: 'build/provision'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'
