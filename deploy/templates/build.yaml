@@ -1,14 +1,8 @@
-variables:
-  buildConfiguration: 'Release'
-
 steps:
-
   - task: UseDotNet@2
-    displayName: 'Use .NET Core sdk'
+    displayName: 'Use .NET Core sdk $(dotnetSdkVersion)'
     inputs:
-      packageType: sdk
-      version: 3.1.x
-      installationPath: $(Agent.ToolsDirectory)/dotnet
+      version: '$(dotnetSdkVersion)'
 
   - task: DotNetCoreCLI@2
     displayName: 'Restore'
@@ -30,7 +24,8 @@ steps:
       publishWebProjects: false
       projects: |
         src/TodoApp/TodoApp/*.csproj
-      arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+      arguments: '--no-build --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+      zipAfterPublish: true
   
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifacts'

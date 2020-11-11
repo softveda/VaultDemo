@@ -6,6 +6,10 @@
 trigger:
 - main
 
+variables:
+  buildConfiguration: 'Release'
+  dotnetSdkVersion: '3.1.x'
+
 stages:
 - stage: Build
   jobs:
