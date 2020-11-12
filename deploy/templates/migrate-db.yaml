@@ -13,7 +13,7 @@ steps:
   inputs:
     azureSubscription: 
     serverName: $(DbName)
-    databaseName:${{parameters.sqlserverfqdn}}
+    databaseName: ${{parameters.sqlserverfqdn}}
     sqlUsername: $(DbUser)
     sqlPassword: $(DbPassword)
     deployType: 'sqlTask'
