@@ -52,6 +52,7 @@ stages:
       displayName: 'Deploy Application'
       condition: eq(1,2)
       dependsOn: MigrateDB
+      environment: 'todoapp-dev'
       variables:
         WebAppName: $[ dependencies.Provision.outputs['RunTerraform.webappname'] ]
       strategy:
