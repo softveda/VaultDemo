@@ -37,11 +37,16 @@ stages:
     - job: MigrateDB
       displayName: 'Run Database Migration'
       variables:
+      - name: WebAppName
+        value: $[ dependencies.Provision.outputs['RunTerraform.webappname'] ]
       - group: Release
       condition: eq(1,2)
       dependsOn: Provision
       steps:
-        - template: 'deploy/templates/dbmigration.yaml'
+        - template: 'deploy/templates/migrate-db.yaml'
+          parameters:
+            environment: 'dev'
+            WebAppName: $[ dependencies.Provision.outputs['RunTerraform.webappname'] ]
         
     - deployment: Deploy
       displayName: 'Deploy Application'

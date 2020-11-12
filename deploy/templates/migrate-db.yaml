@@ -1,0 +1,9 @@
+parameters:
+- name: environment
+  type: string
+
+- name: WebAppName
+  type: string
+
+steps:
+- script: echo The value passed in is $(environment) $(WebAppName)
