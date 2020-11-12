@@ -6,4 +6,4 @@ parameters:
   type: string
 
 steps:
-- script: echo deploy app ${{ parameters.environment }} ${{ WebAppName }}
+- script: echo deploy app ${{ parameters.environment }} ${{ parameters.WebAppName }}
