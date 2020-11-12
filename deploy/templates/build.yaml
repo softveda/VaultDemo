@@ -29,9 +29,9 @@ steps:
 
   - script: dotnet ef migrations script --no-build --no-color  --output $(Build.ArtifactStagingDirectory)/dbmigration.sql --context TodoAppContext  --idempotent
     displayName: Generate DB Migration script
-    workingDirectory: $(Agent.BuildDirectory)/src/TodoApp
+    workingDirectory: $(Build.SourcesDirectory)/src/TodoApp
 
-  - script: cp -r $(Build.BuildDirectory)/deploy $(Build.ArtifactStagingDirectory)
+  - script: cp -r $(Build.SourcesDirectory)/deploy $(Build.ArtifactStagingDirectory)
     displayName: Copy Deployment Files
   
   - task: PublishBuildArtifacts@1
