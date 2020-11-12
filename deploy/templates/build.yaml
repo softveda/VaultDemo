@@ -32,14 +32,14 @@ steps:
     inputs:
       command: 'custom'
       custom: 'tool'
-      arguments: 'install --global dotnet-ef'
+      arguments: 'install --global dotnet-ef --version 3.1.9'
   
   - task: DotNetCoreCLI@2
     displayName: 'Generate DB Migration script'
     inputs:
       command: 'custom'
       custom: 'ef'
-      arguments: 'migrations script --configuration $(BuildConfiguration) --no-build --no-color  --output $(Build.ArtifactStagingDirectory)/dbmigration.sql --context TodoAppContext  --idempotent'
+      arguments: 'migrations script --configuration $(BuildConfiguration) --no-color --verbose  --output $(Build.ArtifactStagingDirectory)/dbmigration.sql --context TodoAppContext  --idempotent'
       workingDirectory: $(Build.SourcesDirectory)/src/TodoApp
 
   - script: cp -r $(Build.SourcesDirectory)/deploy $(Build.ArtifactStagingDirectory)
