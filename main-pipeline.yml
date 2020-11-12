@@ -46,8 +46,8 @@ stages:
       variables:
         WebAppNameDev: $[ dependencies.Provision.outputs['RunTerraform.WebAppNameDev'] ]
       strategy:
-      runOnce:
-        deploy:
-          steps:
-            - template: 'deploy/templates/deploy-app.yaml'
+        runOnce:
+          deploy:
+            steps:
+              - template: 'deploy/templates/deploy-app.yaml'
 
