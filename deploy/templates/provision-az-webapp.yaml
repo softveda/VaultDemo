@@ -29,11 +29,11 @@ steps:
     fi
 
     # Write terraform.tfvars.
-    echo 'prefix = hashidemo' | tee terraform.tfvars
-    echo 'location = westus' | tee -a terraform.tfvars
+    echo 'prefix = "hashidemo"' | tee terraform.tfvars
+    echo 'location = "'ResourceGroupLocation'"' | tee -a terraform.tfvars
     echo 'db_user = "'$(DbUser)'"' | tee -a terraform.tfvars
     echo 'db_password = "'$(DbPassword)'"' | tee -a terraform.tfvars
-    echo 'db_name = TodoDB' | tee -a terraform.tfvars
+    echo 'db_name = "'$(DbName)'"' | tee -a terraform.tfvars
     echo 'isp_client_ip = "'$(ISPClientIP)'"' | tee -a terraform.tfvars
 
     # Create Terraform execution plan
