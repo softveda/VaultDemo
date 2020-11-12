@@ -12,8 +12,12 @@ steps:
     echo 'storage_account_name = "'$(TfStorageAccountName)'"' | tee -a backend.tfvars
     echo 'container_name = "'$(TfStateContainerName)'"' | tee -a backend.tfvars
     echo 'key = "terraform.tfstate"' | tee -a backend.tfvars
+   
+    # Initialize Terraform.
+    echo "*********** Run Terraform Init"
+    terraform init -input=false -backend-config="backend.tfvars" -no-color
 
-    echo "*********** Create or Select Workspace"
+    echo "*********** Create or Select Terraform Workspace"
 
     if [ $(terraform workspace list | grep -c '${{parameters.environment}}') -eq 0 ]
     then
@@ -24,9 +28,6 @@ steps:
       terraform workspace select '${{parameters.environment}}' -no-color
     fi
 
-    # Initialize Terraform.
-    terraform init -input=false -backend-config="backend.tfvars" -no-color
-
     # Write terraform.tfvars.
     echo 'prefix = hashidemo' | tee terraform.tfvars
     echo 'location = westus' | tee terraform.tfvars
@@ -35,8 +36,14 @@ steps:
     echo 'db_name = TodoDB' | tee terraform.tfvars
     echo 'isp_client_ip = "'$(ISPClientIP)'"' | tee terraform.tfvars
 
+    # Create Terraform execution plan
+    echo "*********** Run Terraform Validate and Plan"
+    terraform validate
+    terraform plan -out=tfplan -no-color
+
     # Apply the Terraform plan.
-    terraform apply -input=false -auto-approve -no-color
+    echo "*********** Run Terraform Apply"
+    terraform apply -input=false -auto-approve -no-color tfplan
 
     # Get the App Service name.
     resource_group_name=$(terraform output resource_group_name)
