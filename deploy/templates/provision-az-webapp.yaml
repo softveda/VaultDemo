@@ -36,10 +36,12 @@ steps:
     echo 'db_name = TodoDB' | tee terraform.tfvars
     echo 'isp_client_ip = "'$(ISPClientIP)'"' | tee terraform.tfvars
 
+    cat terraform.tfvars
+
     # Create Terraform execution plan
     echo "*********** Run Terraform Validate and Plan"
     terraform validate
-    terraform plan -out=tfplan -no-color
+    terraform plan -input=false -out=tfplan -no-color
 
     # Apply the Terraform plan.
     echo "*********** Run Terraform Apply"
