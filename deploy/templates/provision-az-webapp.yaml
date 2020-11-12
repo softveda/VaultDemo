@@ -55,7 +55,7 @@ steps:
     rm -f terraform.tfvars
   name: 'RunTerraform'
   displayName: 'Run Terraform'
-  workingDirectory: deploy/todoapp-web
+  workingDirectory: deploy/azure/todoapp-web
   env:
     ARM_CLIENT_ID: $(ARM_CLIENT_ID)
     ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
