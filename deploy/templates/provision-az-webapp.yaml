@@ -30,13 +30,11 @@ steps:
 
     # Write terraform.tfvars.
     echo 'prefix = hashidemo' | tee terraform.tfvars
-    echo 'location = westus' | tee terraform.tfvars
-    echo 'db_user = "'$(DbUser)'"' | tee terraform.tfvars
-    echo 'db_password = "'$(DbPassword)'"' | tee terraform.tfvars
-    echo 'db_name = TodoDB' | tee terraform.tfvars
-    echo 'isp_client_ip = "'$(ISPClientIP)'"' | tee terraform.tfvars
-
-    cat terraform.tfvars
+    echo 'location = westus' | tee -a terraform.tfvars
+    echo 'db_user = "'$(DbUser)'"' | tee -a terraform.tfvars
+    echo 'db_password = "'$(DbPassword)'"' | tee -a terraform.tfvars
+    echo 'db_name = TodoDB' | tee -a terraform.tfvars
+    echo 'isp_client_ip = "'$(ISPClientIP)'"' | tee -a terraform.tfvars
 
     # Create Terraform execution plan
     echo "*********** Run Terraform Validate and Plan"
@@ -61,7 +59,7 @@ steps:
     echo "##vso[task.setvariable variable=web_app_name;isOutput=true]$webappname"
     echo "##vso[task.setvariable variable=web_app_fqdn;isOutput=true]$webappfqdn"
 
-    rm -f terraform.tfvars
+    rm -f *.tfvars
   name: 'RunTerraform'
   displayName: 'Run Terraform'
   workingDirectory: deploy/azure/todoapp-web
