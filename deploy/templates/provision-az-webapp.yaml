@@ -30,7 +30,7 @@ steps:
 
     # Write terraform.tfvars.
     echo 'prefix = "hashidemo"' | tee terraform.tfvars
-    echo 'location = "'ResourceGroupLocation'"' | tee -a terraform.tfvars
+    echo 'location = "'$(ResourceGroupLocation)'"' | tee -a terraform.tfvars
     echo 'db_user = "'$(DbUser)'"' | tee -a terraform.tfvars
     echo 'db_password = "'$(DbPassword)'"' | tee -a terraform.tfvars
     echo 'db_name = "'$(DbName)'"' | tee -a terraform.tfvars
