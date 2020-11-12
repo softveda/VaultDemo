@@ -1,9 +1,9 @@
+parameters:
+- name: environment
+  type: string
+
+- name: WebAppName
+  type: string
+
 steps:
-- download: current
-  artifact: drop
-- task: AzureWebApp@1
-  displayName: 'Azure App Service Deploy'
-  inputs:
-    azureSubscription: '$(ARM_SUBSCRIPTION_ID)'
-    appName: '$(WebAppNameDev)'
-    package: '$(Pipeline.Workspace)/drop/*.zip'
+- script: echo deploy app ${{ parameters.environment }} ${{ WebAppName }}

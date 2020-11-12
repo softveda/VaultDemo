@@ -60,4 +60,7 @@ stages:
           deploy:
             steps:
               - template: 'deploy/templates/deploy-app.yaml'
+                parameters:
+                  environment: 'dev'
+                  WebAppName: $[ dependencies.Provision.outputs['RunTerraform.webappname'] ]
 
