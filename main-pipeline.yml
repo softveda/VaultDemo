@@ -31,6 +31,8 @@ stages:
       - group: Release
       steps:
         - template: 'deploy/templates/provision-az-webapp.yaml'
+          parameters:
+            environment: 'dev'
 
     - job: MigrateDB
       displayName: 'Run Database Migration'
