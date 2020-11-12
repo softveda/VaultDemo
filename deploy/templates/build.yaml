@@ -26,10 +26,31 @@ steps:
         src/TodoApp/*.csproj
       arguments: '--no-build --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
       zipAfterPublish: true
+
+  - script: dotnet ef migrations script --no-build --no-color  --output $(Build.ArtifactStagingDirectory)/dbmigration.sql --context TodoAppContext  --idempotent
+    displayName: Generate DB Migration script
+    workingDirectory: $(Agent.BuildDirectory)/src/TodoApp
+
+  - script: cp -r $(Build.BuildDirectory)/deploy $(Build.ArtifactStagingDirectory)
+    displayName: Copy Deployment Files
   
   - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifacts'
+    displayName: 'Publish Release Artifacts'
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'drop'
+      publishLocation: 'Container'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish DB Migration Script'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/dbmigration.sql'
+      ArtifactName: 'drop'
       publishLocation: 'Container'  
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Deployment Artifacts'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/deploy'
+      ArtifactName: 'deploy'
+      publishLocation: 'Container' 

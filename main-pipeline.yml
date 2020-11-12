@@ -25,32 +25,38 @@ stages:
   displayName: 'Deploy to Dev environment'
   dependsOn: Build
   jobs:
-    - job: Provision
+    - deployment: Provision
       displayName: 'Provision Azure Resources'
       variables:
       - group: Release
-      steps:
-        - template: 'deploy/templates/provision-az-webapp.yaml'
-          parameters:
-            environment: 'dev'
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - template: 'deploy/templates/provision-az-webapp.yaml'
+                parameters:
+                  environment: 'dev'
 
-    - job: MigrateDB
+    - deployment: MigrateDB
       displayName: 'Run Database Migration'
       variables:
-      - name: WebAppName
-        value: $[ dependencies.Provision.outputs['RunTerraform.webappname'] ]
+      - name: sqlserverfqdn
+        value: $[ dependencies.Provision.outputs['RunTerraform.sqlserverfqdn'] ]
       - group: Release
-      condition: eq(1,2)
+      condition: eq(1,1)
       dependsOn: Provision
-      steps:
-        - template: 'deploy/templates/migrate-db.yaml'
-          parameters:
-            environment: 'dev'
-            WebAppName: $[ dependencies.Provision.outputs['RunTerraform.webappname'] ]
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - template: 'deploy/templates/migrate-db.yaml'
+                parameters:
+                  environment: 'dev'
+                  sqlserverfqdn: $(sqlserverfqdn)
         
     - deployment: Deploy
       displayName: 'Deploy Application'
-      condition: eq(1,2)
+      condition: eq(1,1)
       dependsOn: MigrateDB
       environment: 'todoapp-dev'
       variables:
@@ -62,5 +68,5 @@ stages:
               - template: 'deploy/templates/deploy-app.yaml'
                 parameters:
                   environment: 'dev'
-                  WebAppName: $[ dependencies.Provision.outputs['RunTerraform.webappname'] ]
+                  WebAppName: $(WebAppName)
 

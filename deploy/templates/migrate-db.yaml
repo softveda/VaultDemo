@@ -2,8 +2,19 @@ parameters:
 - name: environment
   type: string
 
-- name: WebAppName
+- name: sqlserverfqdn
   type: string
 
 steps:
-- script: echo The value passed in is ${{ parameters.environment }} ${{ parameters.WebAppName }}
+- script: echo The value passed in is ${{ parameters.environment }} ${{ parameters.sqlserverfqdn }}
+
+- task: SqlAzureDacpacDeployment@1
+  displayName: "Run DB Migration Script"
+  inputs:
+    azureSubscription: 
+    serverName: $(DbName)
+    databaseName:${{parameters.sqlserverfqdn}}
+    sqlUsername: $(DbUser)
+    sqlPassword: $(DbPassword)
+    deployType: 'sqlTask'
+    sqlFile: '$(Pipeline.Workspace)/drop/dbmigration.sql'
