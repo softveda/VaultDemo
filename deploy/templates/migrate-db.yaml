@@ -6,4 +6,4 @@ parameters:
   type: string
 
 steps:
-- script: echo The value passed in is $(environment) $(WebAppName)
+- script: echo The value passed in is ${{ parameters.environment }} ${{ parameters.WebAppName }}
