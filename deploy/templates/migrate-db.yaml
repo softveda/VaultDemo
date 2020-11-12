@@ -11,7 +11,7 @@ steps:
 - task: SqlAzureDacpacDeployment@1
   displayName: "Run DB Migration Script"
   inputs:
-    azureSubscription: 
+    azureSubscription: 'azure-terraform-spn'
     serverName: $(DbName)
     databaseName: ${{parameters.sqlserverfqdn}}
     sqlUsername: $(DbUser)

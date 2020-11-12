@@ -29,6 +29,7 @@ stages:
       displayName: 'Provision Azure Resources'
       variables:
       - group: Release
+      environment: 'todoapp-dev'
       strategy:
         runOnce:
           deploy:
@@ -45,6 +46,9 @@ stages:
       - group: Release
       condition: eq(1,1)
       dependsOn: Provision
+      environment: 'todoapp-dev'
+      pool:
+        vmImage: 'windows-latest'
       strategy:
         runOnce:
           deploy:
