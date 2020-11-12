@@ -27,8 +27,19 @@ steps:
       arguments: '--no-build --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
       zipAfterPublish: true
 
-  - script: dotnet ef migrations script --no-build --no-color  --output $(Build.ArtifactStagingDirectory)/dbmigration.sql --context TodoAppContext  --idempotent
-    displayName: Generate DB Migration script
+  - task: DotNetCoreCLI@2
+      displayName: 'Install dotnet-ef'
+      inputs:
+        command: 'custom'
+        custom: 'tool'
+        arguments: 'install --global dotnet-ef'
+  
+  - task: DotNetCoreCLI@2
+    displayName: 'Generate DB Migration script'
+    inputs:
+      command: 'custom'
+      custom: 'ef'
+      arguments: 'migrations script --no-build --no-color  --output $(Build.ArtifactStagingDirectory)/dbmigration.sql --context TodoAppContext  --idempotent'
     workingDirectory: $(Build.SourcesDirectory)/src/TodoApp
 
   - script: cp -r $(Build.SourcesDirectory)/deploy $(Build.ArtifactStagingDirectory)
