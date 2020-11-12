@@ -10,11 +10,44 @@ variables:
   buildConfiguration: 'Release'
   dotnetSdkVersion: '3.1.x'
 
+pool:
+  vmImage: 'ubuntu-latest'
+
 stages:
 - stage: Build
+  displayName: 'Build Application Code'
   jobs:
-  - job: 'Build'
-    pool:
-      vmImage: 'ubuntu-latest'
+  - job: 'Build'    
     steps:
-    - template: 'deploy/templates/build.yaml'
+    - template: 'deploy/provision/templates/build.yaml'
+
+- stage: Dev
+  displayName: 'Deploy to Dev environment'
+  dependsOn: Build
+  jobs:
+    - job: Provision
+      displayName: 'Provision Azure Resources'
+      variables:
+      - group: Release
+      steps:
+        - template: 'deploy/templates/provision-az-webapp.yaml'
+
+    - job: MigrateDB
+      displayName: 'Run Database Migration'
+      condition: eq(1,2)
+      dependsOn: Provision
+      steps:
+        - template: 'deploy/templates/dbmigration.yaml'
+        
+    - deployment: Deploy
+      displayName: 'Deploy Application'
+      condition: eq(1,2)
+      dependsOn: MigrateDB
+      variables:
+        WebAppNameDev: $[ dependencies.Provision.outputs['RunTerraform.WebAppNameDev'] ]
+      strategy:
+      runOnce:
+        deploy:
+          steps:
+            - template: 'deploy/templates/deploy-app.yaml'
+

@@ -1,0 +1,63 @@
+parameters:
+- name: environment
+  type: string
+
+steps:
+- script: |
+    # Exit when any command returns a failure status.
+    set -e
+
+    # Write backend.tfvars.
+    echo 'resource_group_name = "'$(TfStorageAccountResourceGroupName)'"' | tee backend.tfvars
+    echo 'storage_account_name = "'$(TfStorageAccountName)'"' | tee -a backend.tfvars
+    echo 'container_name = "'$(TfStateContainerName)'"' | tee -a backend.tfvars
+    echo 'key = "terraform.tfstate"' | tee -a backend.tfvars
+
+    echo "*********** Create or Select Workspace"
+
+    if [ $(terraform workspace list | grep -c '${{parameters.environment}}') -eq 0 ]
+    then
+      echo "Creating new workspace $1"
+      terraform workspace new '${{parameters.environment}}' -no-color
+    else
+      echo "Switching to workspace '${{parameters.environment}}'"
+      terraform workspace select '${{parameters.environment}}' -no-color
+    fi
+
+    # Initialize Terraform.
+    terraform init -input=false -backend-config="backend.tfvars" -no-color
+
+    # Write terraform.tfvars.
+    echo 'prefix = hashidemo' | tee terraform.tfvars
+    echo 'location = westus' | tee terraform.tfvars
+    echo 'db_user = "'$(DbUser)'"' | tee terraform.tfvars
+    echo 'db_password = "'$(DbPassword)'"' | tee terraform.tfvars
+    echo 'db_name = TodoDB' | tee terraform.tfvars
+    echo 'isp_client_ip = "'$(ISPClientIP)'"' | tee terraform.tfvars
+
+    # Apply the Terraform plan.
+    terraform apply -input=false -auto-approve -no-color
+
+    # Get the App Service name.
+    resource_group_name=$(terraform output resource_group_name)
+    sql_database_name=$(terraform output sql_database_name)
+    sql_server_fqdn=$(terraform output sql_server_fqdn)
+    web_app_name=$(terraform output web_app_name)
+    web_app_fqdn=$(terraform output web_app_fqdn)
+
+    # Write the variables to the pipeline.
+    echo "##vso[task.setvariable variable=resource_group_name;isOutput=true]$resource_group_name"
+    echo "##vso[task.setvariable variable=sql_database_name;isOutput=true]$sql_database_name"
+    echo "##vso[task.setvariable variable=sql_server_fqdn;isOutput=true]$sql_server_fqdn"
+    echo "##vso[task.setvariable variable=web_app_name;isOutput=true]$web_app_name"
+    echo "##vso[task.setvariable variable=web_app_fqdn;isOutput=true]$web_app_fqdn"
+
+    rm -f terraform.tfvars
+  name: 'RunTerraform'
+  displayName: 'Run Terraform'
+  workingDirectory: deploy/todoapp-web
+  env:
+    ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+    ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+    ARM_TENANT_ID: $(ARM_TENANT_ID)
+    ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
