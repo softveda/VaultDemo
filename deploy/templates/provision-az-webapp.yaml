@@ -46,11 +46,11 @@ steps:
     web_app_fqdn=$(terraform output web_app_fqdn)
 
     # Write the variables to the pipeline.
-    echo "##vso[task.setvariable variable=resource_group_name;isOutput=true]$resource_group_name"
-    echo "##vso[task.setvariable variable=sql_database_name;isOutput=true]$sql_database_name"
-    echo "##vso[task.setvariable variable=sql_server_fqdn;isOutput=true]$sql_server_fqdn"
-    echo "##vso[task.setvariable variable=web_app_name;isOutput=true]$web_app_name"
-    echo "##vso[task.setvariable variable=web_app_fqdn;isOutput=true]$web_app_fqdn"
+    echo "##vso[task.setvariable variable=resource_group_name;isOutput=true]$resourcegroupname"
+    echo "##vso[task.setvariable variable=sql_database_name;isOutput=true]$sqldatabasename"
+    echo "##vso[task.setvariable variable=sql_server_fqdn;isOutput=true]$sqlserverfqdn"
+    echo "##vso[task.setvariable variable=web_app_name;isOutput=true]$webappname"
+    echo "##vso[task.setvariable variable=web_app_fqdn;isOutput=true]$webappfqdn"
 
     rm -f terraform.tfvars
   name: 'RunTerraform'
