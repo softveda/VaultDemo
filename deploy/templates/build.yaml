@@ -40,7 +40,7 @@ steps:
       command: 'custom'
       custom: 'ef'
       arguments: 'migrations script --no-build --no-color  --output $(Build.ArtifactStagingDirectory)/dbmigration.sql --context TodoAppContext  --idempotent'
-    workingDirectory: $(Build.SourcesDirectory)/src/TodoApp
+      workingDirectory: $(Build.SourcesDirectory)/src/TodoApp
 
   - script: cp -r $(Build.SourcesDirectory)/deploy $(Build.ArtifactStagingDirectory)
     displayName: Copy Deployment Files
