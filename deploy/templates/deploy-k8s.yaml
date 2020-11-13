@@ -7,7 +7,7 @@ steps:
     namespace: default
     cwd: $(Pipeline.Workspace)/drop/deploy/kubernetes
     command: apply
-    arguments: -f todoapp-deployment.yaml
+    arguments: -f todoapp-deployment.yml
 
 - task: Kubernetes@1
   displayName: kubectl apply - service
@@ -17,4 +17,4 @@ steps:
     namespace: default
     cwd: $(Pipeline.Workspace)/drop/deploy/kubernetes
     command: apply
-    arguments: -f todoapp-svc.yaml
+    arguments: -f todoapp-svc.yml

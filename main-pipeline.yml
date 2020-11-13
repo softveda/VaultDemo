@@ -30,7 +30,7 @@ stages:
       variables:
       - group: Release
       environment: 'todoapp-dev'
-      condition: eq(1,2)
+      condition: eq(1,1)
       strategy:
         runOnce:
           deploy:
@@ -91,6 +91,8 @@ stages:
       condition: eq(1,1)
       environment: 'todoapp-dev'
       variables:
+      - name: DbServer
+        value: tcp:$[ stageDependencies.Dev.Provision.outputs['Provision.RunTerraform.sqlserverfqdn'] ]
       - group: Release
       strategy:
         runOnce:
@@ -105,8 +107,8 @@ stages:
                   writeBOM: true
                   actionOnMissing: 'fail'
                   keepToken: false
-                  tokenPrefix: '#{'
-                  tokenSuffix: '}#'
+                  tokenPrefix: '__'
+                  tokenSuffix: '__'
                   useLegacyPattern: false
                   enableTelemetry: false
               - template: 'deploy/templates/deploy-k8s.yaml'

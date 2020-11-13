@@ -27,11 +27,11 @@ spec:
             - name: GREETING
               value: 'Hello From Kubernetes'
             - name: DB_USER
-              value: 'SqlUser'
+              value: __DbUser__
             - name: DB_PASSWORD
-              value: 'Pa55w.rd1234'
+              value:  __DbPassword__
             - name: DB_SERVER
-              value: 'tcp:hashidemo-dev-sqlserver.database.windows.net'
+              value: __DbServer__
           resources:
             limits:
               memory: "1Gi"
