@@ -22,7 +22,7 @@ stages:
     - template: 'deploy/templates/build.yaml'
 
 - stage: Dev
-  displayName: 'Deploy to Dev environment'
+  displayName: 'Deploy to Azure App Service'
   dependsOn: Build
   jobs:
     - deployment: Provision
@@ -98,6 +98,8 @@ stages:
         runOnce:
           deploy:
             steps:
+              - script: echo $(DbServer)
+                displayName: 'Print Variables'
               - task: replacetokens@3
                 displayName: Replace tokens in yaml files
                 inputs:
