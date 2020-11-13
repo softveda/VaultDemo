@@ -16,5 +16,5 @@ steps:
     azureSubscription: 'azure-terraform-spn'
     appName: ${{ parameters.webappname }}
     appType: webAppLinux
-    appSettings: -DB_SERVER 'tcp:${{ parameters.sqlserverfqdn }}' -DB_USER $(DbUser) -DB_PASSWORD $(DbPassword) -GREETING 'Hello from Azure DevOps'
+    appSettings: -DB_SERVER tcp:${{ parameters.sqlserverfqdn }} -DB_USER $(DbUser) -DB_PASSWORD $(DbPassword) -GREETING "Hello from Azure DevOps"
     package: $(Pipeline.Workspace)/drop/*.zip
