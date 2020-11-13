@@ -30,9 +30,9 @@ namespace TodoApp
 
 
       var builder = new SqlConnectionStringBuilder(Configuration.GetConnectionString("TodoAppContext"));
-      builder.DataSource = Configuration["DB_SERVER"];
-      builder.UserID = Configuration["DB_USER"];
-      builder.Password = Configuration["DB_PASSWORD"];
+      builder.DataSource = Configuration["DB_SERVER"]??"local";
+      builder.UserID = Configuration["DB_USER"]??"SqlUser";
+      builder.Password = Configuration["DB_PASSWORD"]??"password";
 
       services.AddDbContext<TodoAppContext>(options =>
           options.UseSqlServer(builder.ConnectionString));
