@@ -56,7 +56,7 @@ stages:
               - template: 'deploy/templates/migrate-db.yaml'
                 parameters:
                   environment: 'dev'
-                  sqlserverfqdn: $[ dependencies.Provision.outputs['RunTerraform.sqlserverfqdn'] ]
+                  sqlserverfqdn: $(sqlserverfqdn)
         
     - deployment: Deploy
       displayName: 'Deploy Application'
@@ -72,5 +72,5 @@ stages:
               - template: 'deploy/templates/deploy-app.yaml'
                 parameters:
                   environment: 'dev'
-                  WebAppName: $[ dependencies.Provision.outputs['RunTerraform.webappname'] ]
+                  WebAppName: $(webappname)
 

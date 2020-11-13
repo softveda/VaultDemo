@@ -46,18 +46,18 @@ steps:
     terraform apply -input=false -auto-approve -no-color tfplan
 
     # Get the App Service name.
-    resource_group_name=$(terraform output resource_group_name)
-    sql_database_name=$(terraform output sql_database_name)
-    sql_server_fqdn=$(terraform output sql_server_fqdn)
-    web_app_name=$(terraform output web_app_name)
-    web_app_fqdn=$(terraform output web_app_fqdn)
+    resourcegroupname=$(terraform output resource_group_name)
+    sqldatabasename=$(terraform output sql_database_name)
+    sqlserverfqdn=$(terraform output sql_server_fqdn)
+    webappname=$(terraform output web_app_name)
+    webappfqdn=$(terraform output web_app_fqdn)
 
     # Write the variables to the pipeline.
-    echo "##vso[task.setvariable variable=resource_group_name;isOutput=true]$resourcegroupname"
-    echo "##vso[task.setvariable variable=sql_database_name;isOutput=true]$sqldatabasename"
-    echo "##vso[task.setvariable variable=sql_server_fqdn;isOutput=true]$sqlserverfqdn"
-    echo "##vso[task.setvariable variable=web_app_name;isOutput=true]$webappname"
-    echo "##vso[task.setvariable variable=web_app_fqdn;isOutput=true]$webappfqdn"
+    echo "##vso[task.setvariable variable=resourcegroupname;isOutput=true]$resourcegroupname"
+    echo "##vso[task.setvariable variable=sqldatabasename;isOutput=true]$sqldatabasename"
+    echo "##vso[task.setvariable variable=sqlserverfqdn;isOutput=true]$sqlserverfqdn"
+    echo "##vso[task.setvariable variable=webappname;isOutput=true]$webappname"
+    echo "##vso[task.setvariable variable=webappfqdn;isOutput=true]$webappfqdn"
 
     rm -f *.tfvars
   name: 'RunTerraform'
