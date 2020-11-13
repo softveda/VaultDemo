@@ -89,7 +89,6 @@ stages:
     - deployment: Deploy
       displayName: 'Apply kubernetes manifests'
       condition: eq(1,1)
-      dependsOn: Build
       environment: 'todoapp-dev'
       variables:
       - group: Release
@@ -97,4 +96,17 @@ stages:
         runOnce:
           deploy:
             steps:
+              - task: replacetokens@3
+                displayName: Replace tokens in yaml files
+                inputs:
+                  rootDirectory: $(Pipeline.Workspace)/drop/deploy/kubernetes
+                  targetFiles: '**/*.yml'
+                  encoding: 'auto'
+                  writeBOM: true
+                  actionOnMissing: 'fail'
+                  keepToken: false
+                  tokenPrefix: '#{'
+                  tokenSuffix: '}#'
+                  useLegacyPattern: false
+                  enableTelemetry: false
               - template: 'deploy/templates/deploy-k8s.yaml'

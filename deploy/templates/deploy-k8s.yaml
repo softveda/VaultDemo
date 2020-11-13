@@ -8,6 +8,7 @@ steps:
     cwd: $(Pipeline.Workspace)/drop/deploy/kubernetes
     command: apply
     arguments: -f todoapp-deployment.yaml
+
 - task: Kubernetes@1
   displayName: kubectl apply - service
   inputs:
