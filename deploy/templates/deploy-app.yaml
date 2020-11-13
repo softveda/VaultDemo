@@ -2,8 +2,19 @@ parameters:
 - name: environment
   type: string
 
-- name: WebAppName
+- name: webappname
+  type: string
+
+- name: sqlserverfqdn
   type: string
 
 steps:
-- script: echo deploy app ${{ parameters.environment }} ${{ parameters.WebAppName }}
+- script: echo deploy app ${{ parameters.environment }} ${{ parameters.webappname }} ${{ parameters.sqlserverfqdn }}
+- task: AzureWebApp@1
+  displayName: Azure Web App Deploy
+  inputs:
+    azureSubscription: 'azure-terraform-spn'
+    appName: ${{ parameters.webappname }}
+    appType: webAppLinux
+    appSettings: -DB_SERVER ${{ parameters.sqlserverfqdn }} -DB_USER $(DbUser) -DB_PASSWORD $(DbPassword)
+    package: $(Pipeline.Workspace)\drop\*.zip

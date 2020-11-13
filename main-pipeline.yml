@@ -44,7 +44,7 @@ stages:
       - name: sqlserverfqdn
         value: $[ dependencies.Provision.outputs['Provision.RunTerraform.sqlserverfqdn'] ]
       - group: Release
-      condition: eq(1,1)
+      condition: eq(1,2)
       dependsOn: Provision
       environment: 'todoapp-dev'
       pool:
@@ -65,14 +65,18 @@ stages:
       dependsOn: MigrateDB
       environment: 'todoapp-dev'
       variables:
-        WebAppName: $[ dependencies.Provision.outputs['Provision.RunTerraform.webappname'] ]
+        - name: sqlserverfqdn
+          value: $[ dependencies.Provision.outputs['Provision.RunTerraform.sqlserverfqdn'] ]
+        - name: webappname
+          value: $[ dependencies.Provision.outputs['Provision.RunTerraform.webappname'] ]
+        - group: Release
       strategy:
         runOnce:
           deploy:
             steps:
-              - script: echo $(WebAppName)
+              - script: echo $(webappname) $(sqlserverfqdn)
               - template: 'deploy/templates/deploy-app.yaml'
                 parameters:
                   environment: 'dev'
-                  WebAppName: $(webappname)
+                  webappname: $(webappname)
 
