@@ -92,7 +92,7 @@ stages:
       environment: 'todoapp-dev'
       variables:
       - name: DbServer
-        value: tcp:$[ stageDependencies.Dev.Provision.outputs['Provision.RunTerraform.sqlserverfqdn'] ]
+        value: $[ stageDependencies.Dev.Provision.outputs['RunTerraform.sqlserverfqdn'] ]
       - group: Release
       strategy:
         runOnce:
