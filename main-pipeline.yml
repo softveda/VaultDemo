@@ -92,13 +92,13 @@ stages:
       environment: 'todoapp-dev'
       variables:
       - name: DbServer
-        value: $[ stageDependencies.Dev.Provision.outputs['RunTerraform.sqlserverfqdn'] ]
+        value: $[ stageDependencies.Dev.Provision.outputs['Provision.RunTerraform.sqlserverfqdn'] ]
       - group: Release
       strategy:
         runOnce:
           deploy:
             steps:
-              - script: echo $(DbServer)
+              - script: echo DbServer $(DbServer)
                 displayName: 'Print Variables'
               - task: replacetokens@3
                 displayName: Replace tokens in yaml files
