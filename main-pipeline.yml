@@ -85,21 +85,23 @@ stages:
 - stage: Kubernetes
   displayName: 'Deploy to Azure kubernetes cluster'
   dependsOn: Build
+  variables:
+    - name: DbServer
+      value: $[ dependencies.Dev.outputs['Provision.RunTerraform.sqlserverfqdn'] ]
   jobs:    
     - deployment: Deploy
       displayName: 'Apply kubernetes manifests'
       condition: eq(1,1)
       environment: 'todoapp-dev'
       variables:
-      - name: DbServer
-        value: $[ stageDependencies.Dev.Provision.outputs['Provision.RunTerraform.sqlserverfqdn'] ]
-      - group: Release
+        - group: Release
       strategy:
         runOnce:
           deploy:
             steps:
               - script: echo DbServer $(DbServer)
                 displayName: 'Print Variables'
+
               - task: replacetokens@3
                 displayName: Replace tokens in yaml files
                 inputs:
@@ -113,4 +115,5 @@ stages:
                   tokenSuffix: '__'
                   useLegacyPattern: false
                   enableTelemetry: false
+              
               - template: 'deploy/templates/deploy-k8s.yaml'
