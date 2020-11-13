@@ -32,4 +32,3 @@ variable "db_name" {
 variable "isp_client_ip" {
   description = "IP address of your ISP"
 }
-

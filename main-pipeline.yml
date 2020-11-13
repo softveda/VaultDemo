@@ -61,7 +61,7 @@ stages:
         
     - deployment: Deploy
       displayName: 'Deploy Application'
-      condition: eq(1,1)
+      condition: eq(1,2)
       dependsOn: Provision
       environment: 'todoapp-dev'
       variables:
