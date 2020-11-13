@@ -62,7 +62,7 @@ steps:
     rm -f *.tfvars
   name: 'RunTerraform'
   displayName: 'Run Terraform'
-  workingDirectory: deploy/azure/todoapp-web
+  workingDirectory: $(Pipeline.Workspace)/drop/deploy/azure/todoapp-web
   env:
     ARM_CLIENT_ID: $(ARM_CLIENT_ID)
     ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)

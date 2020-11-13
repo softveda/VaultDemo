@@ -39,29 +39,15 @@ steps:
     inputs:
       command: 'custom'
       custom: 'ef'
-      arguments: 'migrations script --configuration $(BuildConfiguration) --no-color --verbose  --output $(Build.ArtifactStagingDirectory)/dbmigration.sql --context TodoAppContext  --idempotent'
+      arguments: 'migrations script --configuration $(BuildConfiguration) --no-build --no-color --verbose  --output $(Build.ArtifactStagingDirectory)/dbmigration.sql --context TodoAppContext  --idempotent'
       workingDirectory: $(Build.SourcesDirectory)/src/TodoApp
-
+ 
   - script: cp -r $(Build.SourcesDirectory)/deploy $(Build.ArtifactStagingDirectory)
     displayName: Copy Deployment Files
-  
+
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Release Artifacts'
     inputs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'drop'
       publishLocation: 'Container'
-
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish DB Migration Script'
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)/dbmigration.sql'
-      ArtifactName: 'drop'
-      publishLocation: 'Container'  
-
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Deployment Artifacts'
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)/deploy'
-      ArtifactName: 'deploy'
-      publishLocation: 'Container' 

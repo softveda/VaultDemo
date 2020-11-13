@@ -12,9 +12,9 @@ steps:
   displayName: "Run DB Migration Script"
   inputs:
     azureSubscription: 'azure-terraform-spn'
-    serverName: $(DbName)
-    databaseName: ${{parameters.sqlserverfqdn}}
+    serverName: ${{parameters.sqlserverfqdn}}
+    databaseName: $(DbName)
     sqlUsername: $(DbUser)
     sqlPassword: $(DbPassword)
     deployType: 'sqlTask'
-    sqlFile: '$(Pipeline.Workspace)/drop/dbmigration.sql'
+    sqlFile: '$(Pipeline.Workspace)\drop\dbmigration.sql'
