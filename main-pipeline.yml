@@ -79,4 +79,5 @@ stages:
                 parameters:
                   environment: 'dev'
                   webappname: $(webappname)
+                  sqlserverfqdn: $(sqlserverfqdn)
 
