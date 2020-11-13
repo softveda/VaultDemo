@@ -17,4 +17,4 @@ steps:
     appName: ${{ parameters.webappname }}
     appType: webAppLinux
     appSettings: -DB_SERVER ${{ parameters.sqlserverfqdn }} -DB_USER $(DbUser) -DB_PASSWORD $(DbPassword)
-    package: $(Pipeline.Workspace)\drop\*.zip
+    package: $(Pipeline.Workspace)/drop/*.zip
