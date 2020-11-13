@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todoapp
+  labels:
+    app: todoapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todoapp
+  template:
+    metadata:
+      labels:
+        app: todoapp
+    spec:
+      containers:
+        - name: todoapp
+          image: hashidemoregistry.azurecr.io/todoapp:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          env:
+            - name: ASPNETCORE_URLS
+              value: http://+:80
+            - name: GREETING
+              value: 'Hello From Kubernetes'
+            - name: DB_USER
+              value: 'SqlUser'
+            - name: DB_PASSWORD
+              value: 'Pa55w.rd1234'
+            - name: DB_SERVER
+              value: 'tcp:hashidemo-dev-sqlserver.database.windows.net'
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "500m"

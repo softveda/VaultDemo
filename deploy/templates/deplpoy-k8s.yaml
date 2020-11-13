@@ -1,0 +1,19 @@
+steps:
+- task: Kubernetes@1
+  displayName: kubectl apply - deployment
+  inputs:
+    connectionType: Kubernetes Service Connection
+    kubernetesServiceEndpoint: aks-hashidemo-default
+    namespace: default
+    cwd: $(Pipeline.Workspace)/drop/deploy/kubernetes
+    command: apply
+    arguments: -f todoapp-deployment.yaml
+- task: Kubernetes@1
+  displayName: kubectl apply - service
+  inputs:
+    connectionType: Kubernetes Service Connection
+    kubernetesServiceEndpoint: aks-hashidemo-default    
+    namespace: default
+    cwd: $(Pipeline.Workspace)/drop/deploy/kubernetes
+    command: apply
+    arguments: -f todoapp-svc.yaml

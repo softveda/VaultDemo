@@ -374,3 +374,5 @@ crash.log
 *.tfvars
 terraform-backend-config.txt
 tfplan
+
+todoappchart/

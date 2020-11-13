@@ -30,6 +30,7 @@ stages:
       variables:
       - group: Release
       environment: 'todoapp-dev'
+      condition: eq(1,2)
       strategy:
         runOnce:
           deploy:
@@ -81,3 +82,19 @@ stages:
                   webappname: $(webappname)
                   sqlserverfqdn: $(sqlserverfqdn)
 
+- stage: Kubernetes
+  displayName: 'Deploy to Azure kubernetes cluster'
+  dependsOn: Build
+  jobs:    
+    - deployment: Deploy
+      displayName: 'Apply kubernetes manifests'
+      condition: eq(1,1)
+      dependsOn: Build
+      environment: 'todoapp-dev'
+      variables:
+      - group: Release
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - template: 'deploy/templates/deploy-k8s.yaml'
