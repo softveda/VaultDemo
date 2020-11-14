@@ -87,7 +87,7 @@ stages:
   dependsOn: Dev
   variables:
     - name: DbServer
-      value: $[ dependencies.Dev.outputs['Provision.RunTerraform.sqlserverfqdn'] ]
+      value: hashidemo-dev-sqlserver.database.windows.net
   jobs:    
     - deployment: Deploy
       displayName: 'Apply kubernetes manifests'
