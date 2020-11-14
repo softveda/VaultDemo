@@ -84,7 +84,7 @@ stages:
 
 - stage: Kubernetes
   displayName: 'Deploy to Azure kubernetes cluster'
-  dependsOn: Build
+  dependsOn: Dev
   variables:
     - name: DbServer
       value: $[ dependencies.Dev.outputs['Provision.RunTerraform.sqlserverfqdn'] ]
