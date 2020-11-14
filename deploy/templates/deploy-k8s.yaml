@@ -12,7 +12,7 @@ steps:
     cwd: $(Pipeline.Workspace)/drop/deploy/kubernetes
     forceUpdateConfigMap: true
     configMapName: app-config
-    configMapArguments: --from-literal=GREETING='Hello from ConfigMap'
+    configMapArguments: --from-literal=GREETING=HelloFromConfigMap
     secretType: generic
     secretName: db-secret
     secretArguments: --from-literal=DB_SERVER=tcp:${{parameters.dbserver}} --from-literal=DB_USER=$(DbUser) --from-literal=DB_PASSWORD=$(DbPassword)
