@@ -99,11 +99,12 @@ stages:
         runOnce:
           deploy:
             steps:
-              - script: echo DbServer $(DbServer)
+              - script: echo DbServer= $(DbServer)
                 displayName: 'Print Variables'
 
               - task: replacetokens@3
                 displayName: Replace tokens in yaml files
+                enabled: false
                 inputs:
                   rootDirectory: $(Pipeline.Workspace)/drop/deploy/kubernetes
                   targetFiles: '**/*.yml'
@@ -117,3 +118,5 @@ stages:
                   enableTelemetry: false
               
               - template: 'deploy/templates/deploy-k8s.yaml'
+                parameters:
+                    dbserver: $(DbServer)

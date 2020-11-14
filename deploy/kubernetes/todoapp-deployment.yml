@@ -25,14 +25,15 @@ spec:
             - name: ASPNETCORE_URLS
               value: http://+:80
             - name: GREETING
-              value: 'Hello From Kubernetes'
-            - name: DB_USER
-              value: __DbUser__
-            - name: DB_PASSWORD
-              value:  __DbPassword__
-            - name: DB_SERVER
-              value: tcp:__DbServer__
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: GREETING
+          envFrom:
+          - secretRef:
+              name: db-secret
+            
           resources:
             limits:
-              memory: "1Gi"
+              memory: "512Mi"
               cpu: "500m"

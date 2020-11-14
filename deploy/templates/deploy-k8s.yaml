@@ -1,6 +1,30 @@
+parameters:
+- name: dbserver
+  type: string
+
 steps:
 - task: Kubernetes@1
-  displayName: kubectl apply - deployment
+  displayName: 'kubectl create configmap'
+  inputs:
+    connectionType: Kubernetes Service Connection
+    kubernetesServiceEndpoint: aks-hashidemo-default
+    namespace: default
+    cwd: $(Pipeline.Workspace)/drop/deploy/kubernetes
+    forceUpdateConfigMap: true
+    configMapName: app-config
+    configMapArguments: --from-literal=GREETING='Greeting fron ConfigMap'
+- task: Kubernetes@1
+  displayName: 'kubectl create secret'
+  inputs:
+    connectionType: Kubernetes Service Connection
+    kubernetesServiceEndpoint: aks-hashidemo-default
+    namespace: default
+    cwd: $(Pipeline.Workspace)/drop/deploy/kubernetes
+    secretType: generic
+    secretName: db-secret
+    secretArguments: --from-literal=DB_SERVER=tcp:${{parameters.dbserver}} --from-literal=DB_USER=$(DbUser) --from-literal=DB_PASSWORD=$(DbPassword)
+- task: Kubernetes@1
+  displayName: 'kubectl apply - deployment'
   inputs:
     connectionType: Kubernetes Service Connection
     kubernetesServiceEndpoint: aks-hashidemo-default
