@@ -30,7 +30,7 @@ stages:
       variables:
       - group: Release
       environment: 'todoapp-dev'
-      condition: eq(1,1)
+      condition: eq(1,2)
       strategy:
         runOnce:
           deploy:
@@ -84,7 +84,7 @@ stages:
 
 - stage: Kubernetes
   displayName: 'Deploy to Azure kubernetes cluster'
-  dependsOn: Dev
+  dependsOn: Build
   variables:
     - name: DbServer
       value: hashidemo-dev-sqlserver.database.windows.net
