@@ -1,4 +1,6 @@
 using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace TodoExporter
 {
@@ -9,5 +11,16 @@ namespace TodoExporter
         public DateTime DueDate { get; set; }
         public string Category { get; set; }
         public decimal Effort { get; set; }
+
+        public string ToJsonString(bool formatted=true)
+        {
+          var options = new JsonSerializerOptions
+          {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            WriteIndented = formatted,
+          };
+          var jsonString = JsonSerializer.Serialize(this, options);
+          return jsonString;
+        }
     }
 }
