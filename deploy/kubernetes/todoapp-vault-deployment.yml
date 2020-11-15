@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todoapp
+  labels:
+    app: todoapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todoapp
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/role: "todoapp-role"
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/agent-inject-status: "update"        
+        vault.hashicorp.com/agent-inject-secret-todoapp.config: "secret/todoapp/config"
+        vault.hashicorp.com/agent-inject-template-todoapp.config: |
+          {{ with secret "secret/todoapp/config" -}}
+          {{ range $k, $v := .Data.data }}
+          export {{ $k }}='{{ $v }}'
+          {{ end }}
+          {{- end }}
+      labels:
+        app: todoapp
+    spec:
+      serviceAccountName: todoapp-auth
+      containers:
+        - name: todoapp
+          image: hashidemoregistry.azurecr.io/todoapp:latest
+          imagePullPolicy: IfNotPresent
+          command: ['sh', '-c', 'echo "setting environment" && chmod +x /vault/secrets/todoapp.config && . /vault/secrets/todoapp.config && dotnet TodoApp.dll']
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          env:
+            - name: ASPNETCORE_URLS
+              value: http://+:80
+            
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
