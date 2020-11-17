@@ -19,5 +19,4 @@ It demonstrates the following Vault workflows
 - **deploy/templates** - This has all Azure DevOps pipeline yamls
 - **deploy/azure** - This has all Azure Terraform modules and templates
 - **deploy/kubernetes** - This has all Kubernetes manifests to host the TodoApp
-- **deploy/vault** - Scripts to demo vault workflow for Kubernetes, Dynamic DB Secrets and Identity brokering across AWS.
-- **demoscripts** - The scripts to configure kubernetes for vault injector is in scrips 01 - 04. The scripts to configure Dynamic SQL and AWS secrets with Azure auth is in 05 - 08.
+- **deploy/vault** - The scripts to configure kubernetes for vault injector are in scripts 01 - 04. The scripts to configure Dynamic SQL and AWS secrets with Azure auth are in 05 - 08.
